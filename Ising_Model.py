@@ -20,8 +20,9 @@ import random as r
 # Initial Conditions
 array_size = 5
 z = 4                   # lattice coordination number (is this ever not 4?)
-beta = 10
+beta = .5                # not sure what value this should take (10 makes the exponential way to small
 J = 1
+N_sweeps = 1
 
 # Functions
 def random_array():
@@ -33,16 +34,27 @@ def random_array():
     return seed_array
 
 
-def A_values():
-    return
+def A_ratios():
+    ## Creates a dictionary of acceptance ratios for every possible delE
+    A_values = {}
+    max_delE_ = 2 * J * z
+    delE_ = -max_delE_
+    while delE_ <= max_delE_:
+        if delE_ > 0:
+            A_values[delE_] = np.exp(-beta * delE_)
+        else:
+            A_values[delE_] = 1
+        delE_ += 4 * J                  # see bottom of page 50
+    return A_values
 
 
-def flip_spin(model_):
+def flip_spin():
     ## Returns an array with one flipped node
-    if model_[flip_i,flip_j] == 1:
-        model_[flip_i,flip_j] = -1
+    model_ = np.copy(model)
+    if model_[flip_i, flip_j] == 1:
+        model_[flip_i, flip_j] = -1
     else:
-        model_[flip_i,flip_j] = 1
+        model_[flip_i, flip_j] = 1
     return model_
 
 
@@ -72,8 +84,17 @@ def delE():
     diff = diff * 2 * J * model[flip_i, flip_j]
     return diff
 
-def accept():
-    return
+def accept(delE_):
+    rrand = r.random()
+    if delE_ >= 0:
+        print('Accepted: delE = ' + str(delE_))
+        return True
+    elif A_dict[delE_] > rrand:
+        print('Accepted: delE = ' + str(delE_) +' A_value = ' + str(A_dict[delE_]) + ' rrand + ' + str(rrand))
+        return True
+    else:
+        print('Rejected: delE = ' + str(delE_) + ' A_value = ' + str(A_dict[delE_]) + ' rrand + ' + str(rrand))
+        return False
 
 
 def step():
@@ -81,19 +102,23 @@ def step():
 
 
 # Initialize
+n_steps = N_sweeps * array_size**2
 model = random_array()
 
 # Setup
+A_dict = A_ratios()
 
-# Testing delE function
-for test in range(20):
-    flip_i = r.randint(0, array_size - 1)
-    flip_j = r.randint(0, array_size - 1)
-    print('Flipping (' + str(flip_i) + ',' + str(flip_j) + ')')
-    print(delE())
+# # Testing delE function
+# for test in range(20):
+#     flip_i = r.randint(0, array_size - 1)
+#     flip_j = r.randint(0, array_size - 1)
+#     print('Flipping (' + str(flip_i) + ',' + str(flip_j) + ')')
+#     print(delE())
 
-# only have to actually flip if accepted
-flipped = flip_spin(np.copy(model))  # This np.copy is very important. Otherwise the original model is changed as well
 
 # Main
-
+for n in range(n_steps):
+    flip_i = r.randint(0, array_size - 1)
+    flip_j = r.randint(0, array_size - 1)
+    if accept(delE()):
+        model = flip_spin()
