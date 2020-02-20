@@ -2,16 +2,18 @@
 
 ## Evatt Salinger, Dr. Kassahun Betre, Josh Vasquez
 # 1. Make Spin Array [Evatt 2/19/20]
-# 3. Store Acceptance values (skipped for now)
+# 3. Store Acceptance values [Evatt 2/20/20]
 # 2. Choose temperature (just beta? [Evatt 2/19/20])
 # 3. Set initial state
 # 4. Flip spin -> New array [Evatt 2/19/20]
-# 5. Calculate Energy difference
-# 6. Acceptance Test
-# 7. Repeat 3-5 for some number of sweeps
+# 5. Calculate Energy difference [Evatt 2/19/20]
+# 6. Acceptance Test [Evatt 2/20/20]
+# 7. Repeat 3-5 for some number of sweeps [Evatt 2/19/20]
 # 8. Visualize end result
 # 9. Store and compare endstates
 # 10. Run again with seed states
+
+# Next Steps: Add magnetization evaluation, plot for every step to quantify equilibration
 
 # Import Statements
 import numpy as np
@@ -20,9 +22,9 @@ import random as r
 # Initial Conditions
 array_size = 5
 z = 4                   # lattice coordination number (is this ever not 4?)
-beta = .5                # not sure what value this should take (10 makes the exponential way to small
+beta = 10                # not sure what value this should take (10 makes the exponential way to small
 J = 1
-N_sweeps = 10
+N_sweeps = 1
 
 # Functions
 def random_array():
