@@ -22,7 +22,7 @@ array_size = 5
 z = 4                   # lattice coordination number (is this ever not 4?)
 beta = .5                # not sure what value this should take (10 makes the exponential way to small
 J = 1
-N_sweeps = 1
+N_sweeps = 10
 
 # Functions
 def random_array():
@@ -86,14 +86,14 @@ def delE():
 
 def accept(delE_):
     rrand = r.random()
-    if delE_ >= 0:
-        print('Accepted: delE = ' + str(delE_))
+    if delE_ <= 0:
+        # print('Accepted: delE = ' + str(delE_))
         return True
     elif A_dict[delE_] > rrand:
-        print('Accepted: delE = ' + str(delE_) +' A_value = ' + str(A_dict[delE_]) + ' rrand + ' + str(rrand))
+        # print('Accepted: delE = ' + str(delE_) +' A_value = ' + str(A_dict[delE_]) + ' rrand = ' + str(rrand))
         return True
     else:
-        print('Rejected: delE = ' + str(delE_) + ' A_value = ' + str(A_dict[delE_]) + ' rrand + ' + str(rrand))
+        # print('Rejected: delE = ' + str(delE_) + ' A_value = ' + str(A_dict[delE_]) + ' rrand = ' + str(rrand))
         return False
 
 
@@ -104,6 +104,7 @@ def step():
 # Initialize
 n_steps = N_sweeps * array_size**2
 model = random_array()
+initial_model = np.copy(model)
 
 # Setup
 A_dict = A_ratios()
