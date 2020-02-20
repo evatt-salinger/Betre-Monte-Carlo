@@ -48,14 +48,12 @@ def A_ratios():
     return A_values
 
 
-def flip_spin():
+def flip_spin(model_):
     ## Returns an array with one flipped node
-    model_ = np.copy(model)
     if model_[flip_i, flip_j] == 1:
         model_[flip_i, flip_j] = -1
     else:
         model_[flip_i, flip_j] = 1
-    return model_
 
 
 def delE():
@@ -122,4 +120,4 @@ for n in range(n_steps):
     flip_i = r.randint(0, array_size - 1)
     flip_j = r.randint(0, array_size - 1)
     if accept(delE()):
-        model = flip_spin()
+        flip_spin(model)
