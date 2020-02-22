@@ -104,7 +104,7 @@ plt.matshow(model)
 
 # Setup
 A_dict = A_ratios()
-#print("exp(-beta E) values ",A_dict)
+print("exp(-beta E) values ",A_dict)
 
 # # Testing delE function
 # for test in range(20):
