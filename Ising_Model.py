@@ -18,13 +18,14 @@
 # Import Statements
 import numpy as np
 import random as r
+import matplotlib.pyplot as pp
 
 # Initial Conditions
 array_size = 5
 z = 4                   # lattice coordination number (is this ever not 4?)
-beta = 10                # not sure what value this should take (10 makes the exponential way to small
+beta = 1                # not sure what value this should take (10 makes the exponential way to small
 J = 1
-N_sweeps = 1
+n_sweeps = 10
 
 # Functions
 def random_array():
@@ -97,17 +98,16 @@ def accept(delE_):
         return False
 
 
-def step():
-    return
-
-
 # Initialize
-n_steps = N_sweeps * array_size**2
+N_steps = n_sweeps * array_size ** 2
 model = random_array()
-initial_model = np.copy(model)
 
 # Setup
 A_dict = A_ratios()
+initial_model = np.copy(model)
+model_list = [np.copy(model)]
+mag_list = [np.sum(model)]
+N_list = [i for i in range(N_steps)]
 
 # # Testing delE function
 # for test in range(20):
@@ -118,8 +118,17 @@ A_dict = A_ratios()
 
 
 # Main
-for n in range(n_steps):
+for N in N_list[1:]:
     flip_i = r.randint(0, array_size - 1)
     flip_j = r.randint(0, array_size - 1)
     if accept(delE()):
         flip_spin(model)
+        mag_list.append(mag_list[N-1] + 2 * model[flip_i,flip_j])
+    else:
+        mag_list.append(mag_list[N-1])
+    model_list.append(np.copy(model))
+
+print(len(N_list),len(mag_list))
+
+pp.plot(N_list, mag_list)
+pp.show()
