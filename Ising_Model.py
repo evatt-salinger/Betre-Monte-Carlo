@@ -13,7 +13,6 @@
 # 9. Store and compare endstates
 # 10. Run again with seed states
 
-# Next Steps: Add magnetization evaluation, plot for every step to quantify equilibration
 
 # Import Statements
 import numpy as np
@@ -21,11 +20,11 @@ import random as r
 import matplotlib.pyplot as pp
 
 # Initial Conditions
-array_size = 5
+array_size = 10
 z = 4                   # lattice coordination number (is this ever not 4?)
-beta = 1                # not sure what value this should take (10 makes the exponential way to small
+beta = 1
 J = 1
-n_sweeps = 10
+n_sweeps = 20
 
 # Functions
 def random_array():
@@ -41,13 +40,10 @@ def A_ratios():
     ## Creates a dictionary of acceptance ratios for every possible delE
     A_values = {}
     max_delE_ = 2 * J * z
-    delE_ = -max_delE_
+    delE_ = 0
     while delE_ <= max_delE_:
-        if delE_ > 0:
-            A_values[delE_] = np.exp(-beta * delE_)
-        else:
-            A_values[delE_] = 1
-        delE_ += 4 * J                  # see bottom of page 50
+        delE_ += 4 * J  # see bottom of page 50
+        A_values[delE_] = np.exp(-beta * delE_)
     return A_values
 
 
